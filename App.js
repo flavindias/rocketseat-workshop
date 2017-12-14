@@ -11,6 +11,7 @@ import {
   ScrollView,
   StyleSheet,
   Platform,
+  AsyncStorage,
   TouchableOpacity
 } from 'react-native';
 
@@ -38,7 +39,7 @@ export default class App extends Component {
     ],
   };
   _addRepository = async (newRepoText) => {
-    const repoCall = await fetch(`http://api.github.com/repos/${newRepoText}`);
+    const repoCall = await fetch(`https://api.github.com/repos/${newRepoText}`);
     const response = await repoCall.json();
 
     const repository = {
@@ -56,6 +57,10 @@ export default class App extends Component {
       ]
     })
   };
+
+// salvando os dados
+  await AsyncStorage.setItem('@Minicurso:repositories', JSON.stringify(this.state.repos)); //@nomedoapp:variavel
+
   render() {
     return (
       <View style={styles.container}>
