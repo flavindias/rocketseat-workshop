@@ -38,6 +38,13 @@ export default class App extends Component {
       // },
     ],
   };
+
+  // executado sozinho quando criado pelo react native
+  async componentDidMount() {
+    const repos = JSON.parse(await AsyncStorage.getItem('@Minicurso:repositories')) || [];
+    this.setState({repos});
+  }
+
   _addRepository = async (newRepoText) => {
     const repoCall = await fetch(`https://api.github.com/repos/${newRepoText}`);
     const response = await repoCall.json();
@@ -56,10 +63,11 @@ export default class App extends Component {
         repository
       ]
     })
+    // salvando os dados
+      await AsyncStorage.setItem('@Minicurso:repositories', JSON.stringify(this.state.repos)); //@nomedoapp:variavel
+
   };
 
-// salvando os dados
-  await AsyncStorage.setItem('@Minicurso:repositories', JSON.stringify(this.state.repos)); //@nomedoapp:variavel
 
   render() {
     return (
